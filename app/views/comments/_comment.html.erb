@@ -1,0 +1,7 @@
+<p>
+  <%= link_to '[x]', [comment.route, comment],
+             :confirm => 'Are you sure?',
+             :method => :delete %>
+  <b><%= comment.commenter %> says...</b><br/>
+  <%= comment.body %>
+</p>

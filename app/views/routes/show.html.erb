@@ -3,59 +3,16 @@
 <h1><%= @route.name %></h1>
 
 <h2>Destinations</h2>
-<% @route.destinations.each do |f| %>
-  <p>
-    <b>Name:</b>
-    <%= f.name %>
-  </p>
-  <p>
-    <b>ID:</b>
-    <%= f.destID %>
-  </p>
-<% end %>
+<%= render @route.destinations %>
 
 <h2>Comments</h2>
-<% @route.comments.each do |comment| %>
-  <p>
-    <b>Commenter:</b>
-    <%= comment.commenter %>
-  </p>
- 
-  <p>
-    <b>Comment:</b>
-    <%= comment.body %>
-  </p>
-<% end %>
+<%= render @route.comments %>
 
 <h2>Add a destination:</h2>
-<%= form_for([@route, @route.destinations.build]) do |f| %>
-  <div class="field">
-    <%= f.label :name %><br/>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    ID<br/>
-    <%= f.text_field :destID %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+<%= render "destinations/form" %>
 
 <h2>Add a comment:</h2>
-<%= form_for([@route, @route.comments.build]) do |f| %>
-  <div class="field">
-    <%= f.label :commenter %><br />
-    <%= f.text_field :commenter %>
-  </div>
-  <div class="field">
-    <%= f.label :body %><br />
-    <%= f.text_area :body %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+<%= render "comments/form" %>
 
 <%= link_to 'Edit', edit_route_path(@route) %> |
 <%= link_to 'Back', routes_path %>
