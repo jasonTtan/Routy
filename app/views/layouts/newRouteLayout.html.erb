@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Routy: Build Your Route</title>
+    <%= stylesheet_link_tag    "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+    <script type="text/javascript">
+    $(document).ready(function() {
+
+	// Following function loads in new destinations from Yelp and adds them
+	// to the page
+	$('#searchBar').submit(function() {
+	    var encodedSearchTerm = encodeURI($('#searchTerm').val());
+	    $.post("<%= yelpDests_path %>", { searchTerm: encodedSearchTerm},
+		   function(data) {
+		       var businesses = data["businesses"];
+		       htmlString = "<table id=\"destTable\">";
+		       var i = 0;
+		       for (i = 0; i < businesses.length; i++) {
+			   htmlString += "<tr><td>" + businesses[i]["name"] + "</td></tr>";
+		       }
+		       htmlString += "</table>";
+		       $('#destinations').html(htmlString);
+		   });
+	    return false;
+	});
+    });
+</script>
+  </head>
+  <body>
+
+    <%= yield %>
+
+  </body>
+</html>

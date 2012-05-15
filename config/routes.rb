@@ -1,6 +1,5 @@
 Routy::Application.routes.draw do
-  get "home/index"
-
+  match '/yelpDests' => 'routes#yelpDests'
   resources :routes do
     resources :destinations
     resources :comments
