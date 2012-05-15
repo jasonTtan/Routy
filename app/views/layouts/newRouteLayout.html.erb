@@ -7,24 +7,64 @@
     <%= csrf_meta_tags %>
     <script type="text/javascript">
     $(document).ready(function() {
-
-	// Following function loads in new destinations from Yelp and adds them
-	// to the page
-	$('#searchBar').submit(function() {
+	// Takes a destination as an argument and formats it into HTML
+	function destHTMLFormatter( dest ) {
+	    htmlString = "";
+	    htmlString += "<div id=\"" + dest["id"] +"\">";
+	    // name
+	    htmlString += "<h4 class=\"destName\">"
+		+ dest["name"]
+		+ "</h4>";
+	    // image
+	    htmlString += "<img class=\"destImage\" src=\""
+		+ dest["image_url"] + "\"/>";
+	    // address
+	    htmlString += "<p class=\"destAddress\">"
+		+ dest["location"]["display_address"]
+		+ "</p>";
+	    // rating image
+	    htmlString += "<img class=\"destRating\" src=\""
+		+ dest["rating_img_url"] + "\"/>";
+	    // snippet text
+	    htmlString += "<p class=\"destSnippet\">"
+		+ dest["snippet_text"] + "</p>";
+	    // snippet image
+	    htmlString += "<img class=\"destSnippetImage\" src=\""
+		+ dest["snippet_image_url"] + "\"/>";
+	    // add button
+	    htmlString += "<button id=\"blah\" class=\"destAddButton\" type=\"button\">"
+		+"Add to Route</button>"
+	    htmlString += "</div>"
+	    return htmlString;
+	}
+	
+	// The following event loads in new destinations from Yelp and adds them
+	// to the page when the search form is submitted
+	$('#destSearchBar').submit(function() {
 	    var encodedSearchTerm = encodeURI($('#searchTerm').val());
-	    $.post("<%= yelpDests_path %>", { searchTerm: encodedSearchTerm},
+	    $.get("<%= yelpDests_path %>", { searchTerm: encodedSearchTerm},
 		   function(data) {
 		       var businesses = data["businesses"];
-		       htmlString = "<table id=\"destTable\">";
-		       var i = 0;
+		       htmlString = "";
+		       var i;
+		       // The following loop builds the html for each
+		       // destination that will be added to the for destination
+		       // div.
 		       for (i = 0; i < businesses.length; i++) {
-			   htmlString += "<tr><td>" + businesses[i]["name"] + "</td></tr>";
+			   htmlString += destHTMLFormatter(businesses[i]);
 		       }
-		       htmlString += "</table>";
-		       $('#destinations').html(htmlString);
+		       $('#destList').html(htmlString);
 		   });
+	    // return false so we don't follow the link after submission
 	    return false;
 	});
+
+	// This event adds a destination to the My Route div when a
+	// destination's add button is clicked
+	$('#destList').delegate('.destAddButton', 'click', function() {
+	    $('#myRouteArea').append("<p>" + $(this).parent().id + "</p>");
+	});
+
     });
 </script>
   </head>
