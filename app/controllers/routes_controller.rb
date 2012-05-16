@@ -38,7 +38,7 @@ class RoutesController < ApplicationController
     @route = Route.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html { render layout: "showRouteLayout" } # show.html.erb
       format.json { render json: @route }
     end
   end
@@ -49,7 +49,7 @@ class RoutesController < ApplicationController
     @route = Route.new
 
     respond_to do |format|
-      format.html { render layout: "newRouteLayout" }
+      format.html # new.html.erb
       format.json { render json: @route }
     end
   end

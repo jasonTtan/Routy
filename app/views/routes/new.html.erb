@@ -1,19 +1,5 @@
 <h1>New Route</h1>
 
-<!-- <%= render 'form' %> -->
-<div id="myRouteArea">
-  <h2>My Route</h2>
-</div>
-
-<div id="destArea">
-  <!-- Yelp Search Bar -->
-  <form id="destSearchBar" action="<%= yelpDests_path %>">
-    <label>Search: <input type="text" id="searchTerm" name="searchTerm" maxlength="30" /></label>
-    <input type="submit"/>
-  </form>
-
-  <!-- Will load destinations into destList using AJAX -->
-  <div id="destList"></div>
-</div>
+<%= render 'form' %>
 
 <%= link_to 'Back', routes_path %>
