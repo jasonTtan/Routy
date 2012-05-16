@@ -7,10 +7,22 @@
     <%= csrf_meta_tags %>
     <script type="text/javascript">
     $(document).ready(function() {
+	// variable to store the IDs of the destinations that the user has
+	// added to their route.
+	var myRoute = [];
+
 	// Takes a destination as an argument and formats it into HTML
-	function destHTMLFormatter( dest ) {
+	function addDestToDestList( dest ) {
+	    // don't add to destList if destination has already been
+	    // added My Route
+	    var i;
+	    for (i = 0; i < myRoute.length; i++) {
+		if (dest.id == myRoute[i])
+		    return;
+	    }
+	    
 	    htmlString = "";
-	    htmlString += "<div id=\"" + dest["id"] +"\">";
+	    htmlString += "<div class=\"destination\" id=\"" + dest["id"] +"\">";
 	    // name
 	    htmlString += "<h4 class=\"destName\">"
 		+ dest["name"]
@@ -35,34 +47,37 @@
 	    htmlString += "<button id=\"blah\" class=\"destAddButton\" type=\"button\">"
 		+"Add to Route</button>"
 	    htmlString += "</div>"
-	    return htmlString;
+	    $('#destList').append(htmlString);
 	}
 	
-	// The following event loads in new destinations from Yelp and adds them
-	// to the page when the search form is submitted
+	// Event fires when destSearchBar form is submitted
+	// Loads in new destinations from Yelp and adds them to the page.
 	$('#destSearchBar').submit(function() {
 	    var encodedSearchTerm = encodeURI($('#searchTerm').val());
 	    $.get("<%= yelpDests_path %>", { searchTerm: encodedSearchTerm},
 		   function(data) {
 		       var businesses = data["businesses"];
-		       htmlString = "";
+		       // clear destList's contents
+		       $('#destList').html("");
 		       var i;
-		       // The following loop builds the html for each
-		       // destination that will be added to the for destination
-		       // div.
+		       // The following loop adds HTML for each destination to
+		       // the page
 		       for (i = 0; i < businesses.length; i++) {
-			   htmlString += destHTMLFormatter(businesses[i]);
+			   var dest = businesses[i];
+			   addDestToDestList(dest);
 		       }
-		       $('#destList').html(htmlString);
 		   });
 	    // return false so we don't follow the link after submission
 	    return false;
 	});
 
-	// This event adds a destination to the My Route div when a
-	// destination's add button is clicked
+	// Event fires when an "Add to Route" button is clicked
+	// Moves the destination's div to the myRoute div
+	// Adds the destination's ID to the myRoute global variable
 	$('#destList').delegate('.destAddButton', 'click', function() {
-	    $('#myRouteArea').append("<p>" + $(this).parent().id + "</p>");
+	    var destinationDiv = $(this).parent()[0];
+	    myRoute.push(destinationDiv.id);
+	    $('#myRouteArea').append($(destinationDiv));
 	});
 
     });
