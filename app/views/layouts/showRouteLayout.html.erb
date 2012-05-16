@@ -9,22 +9,22 @@
     $(document).ready(function() {
 	// variable to store the IDs of the destinations that the user has
 	// added to their route.
-	var myRoute = [];
+	var myDests = [];
 
 	// Takes a destination as an argument and formats it into HTML
 	function addDestToDestList( dest ) {
 	    // don't add to destList if destination has already been
 	    // added My Route
 	    var i;
-	    for (i = 0; i < myRoute.length; i++) {
-		if (dest.id == myRoute[i])
+	    for (i = 0; i < myDests.length; i++) {
+		if (dest.id == myDests[i])
 		    return;
 	    }
 	    
 	    htmlString = "";
 	    htmlString += "<div class=\"destination\" id=\"" + dest["id"] +"\">";
 	    // name
-	    htmlString += "<h4 class=\"destName\">"
+	    htmlString += "<h4 id=\"asdfasdf\" class=\"destName\">"
 		+ dest["name"]
 		+ "</h4>";
 	    // image
@@ -44,7 +44,7 @@
 	    htmlString += "<img class=\"destSnippetImage\" src=\""
 		+ dest["snippet_image_url"] + "\"/>";
 	    // add button
-	    htmlString += "<button id=\"blah\" class=\"destAddButton\" type=\"button\">"
+	    htmlString += "<button class=\"destAddButton\" type=\"button\">"
 		+"Add to Route</button>"
 	    htmlString += "</div>"
 	    $('#destList').append(htmlString);
@@ -72,14 +72,26 @@
 	});
 
 	// Event fires when an "Add to Route" button is clicked
-	// Moves the destination's div to the myRoute div
-	// Adds the destination's ID to the myRoute global variable
+	// Moves the destination's div to the myRouteArea div
+	// Adds the destination's ID to the myDests global variable
 	$('#destList').delegate('.destAddButton', 'click', function() {
 	    var destinationDiv = $(this).parent()[0];
-	    myRoute.push(destinationDiv.id);
+	    myDests.push(
+	    	{ id: destinationDiv.id,
+	    	  name: $(destinationDiv).find('.destName').text()
+	    	});
 	    $('#myRouteArea').append($(destinationDiv));
 	});
 
+	// Event fires when the saveRouteButton is clicked
+	// Saves the destinations in myDests to the database
+	$('#saveRouteButton').click(function() {
+	    $.post( "<%= saveRoute_route_path %>", {myDests: myDests},
+	    	   function(data) {
+	    	       return false;
+	    	   })
+	});
+	
     });
 </script>
   </head>

@@ -2,8 +2,9 @@
 
 <h1><%= @route.name %></h1>
 
-<!-- <h2>Destinations</h2> -->
-<!-- <%= render @route.destinations %> -->
+<h3>Destinations already in the database for this route:</h3>
+<p>hacky right now. if you save route, refresh to see the updated database contents</p>
+<%= render @route.destinations %>
 
 <!-- <h2>Comments</h2> -->
 <!-- <%= render @route.comments %> -->
@@ -16,9 +17,11 @@
 
 <div id="myRouteArea">
   <h2>My Route</h2>
+  <button id="saveRouteButton" type="button">Save Route</button>
 </div>
 
 <div id="destArea">
+  <h2>Yelp Destinations</h2>
   <!-- Yelp Search Bar -->
   <form id="destSearchBar" action="<%= yelpDests_path %>">
     <label>Search: <input type="text" id="searchTerm" name="searchTerm" maxlength="30" /></label>

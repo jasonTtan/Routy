@@ -1,6 +1,10 @@
 Routy::Application.routes.draw do
   match '/yelpDests' => 'routes#yelpDests'
+
   resources :routes do
+    member do
+      post 'saveRoute'
+    end
     resources :destinations
     resources :comments
   end

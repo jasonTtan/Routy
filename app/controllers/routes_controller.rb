@@ -10,6 +10,15 @@ class RoutesController < ApplicationController
     end
   end
 
+  def saveRoute
+    @route = Route.find(params[:id])
+    params[:myDests].each do |i, dest|
+      @route.destinations.create(:destID => dest["id"], :name => dest["name"]);
+    end
+
+#    end
+  end
+
   def yelpDests
     # This function acts as a server side proxy to retrieve yelp data without
     # exposing secret keys
@@ -36,7 +45,6 @@ class RoutesController < ApplicationController
   # GET /routes/1.json
   def show
     @route = Route.find(params[:id])
-
     respond_to do |format|
       format.html { render layout: "showRouteLayout" } # show.html.erb
       format.json { render json: @route }
