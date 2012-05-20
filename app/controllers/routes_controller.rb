@@ -15,13 +15,12 @@ class RoutesController < ApplicationController
     params[:myDests].each do |i, dest|
       @route.destinations.create(:destID => dest["id"], :name => dest["name"]);
     end
-
-#    end
   end
 
+  
+  # This function acts as a server side proxy to retrieve yelp data without
+  # exposing secret keys
   def yelpDests
-    # This function acts as a server side proxy to retrieve yelp data without
-    # exposing secret keys
     consumer_key = '7H5kBamS1jYaTsK_2RYmFQ'
     consumer_secret = '5CB-sj4CP71f3YJSQyjKV3PNktI'
     token = 'uEF1SqoxT9YF-3PEBaUJldLma-WcFp2M'
@@ -40,9 +39,9 @@ class RoutesController < ApplicationController
     render :json => access_token.get(path).body
   end
 
-
   # GET /routes/1
   # GET /routes/1.json
+  # displays a finished route
   def show
     @route = Route.find(params[:id])
     respond_to do |format|
@@ -53,18 +52,31 @@ class RoutesController < ApplicationController
 
   # GET /routes/new
   # GET /routes/new.json
+  # regular route building app
   def new
-    @route = Route.new
+    @routeAction = :new
+    render "buildRoute", :layout => "buildRouteLayout"
+    
+    # commented out original code
+    # @route = Route.new
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @route }
-    end
+    # respond_to do |format|
+    #   format.html # new.html.erb
+    #   format.json { render json: @route }
+    # end
   end
 
   # GET /routes/1/edit
+  # opens up the route builder with routes already in it
   def edit
+    @routeAction = :edit
+    @curID = params[:id]
     @route = Route.find(params[:id])
+    
+    render "buildRoute", :layout => "buildRouteLayout"
+
+    # commented out original code
+    # @route = Route.find(params[:id])
   end
 
   # POST /routes

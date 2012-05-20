@@ -1,0 +1,29 @@
+<!-- This is all stuff for my own testing -->
+<% if @routeAction == :new %>
+<h1> this is a new route </h1>
+<% elsif @routeAction == :edit %>
+<h1> editing route <%= @curID %> </h1>
+<% @route.destinations.each do |dest| %>
+<h2> <%= dest.destID %> </h2>
+<% end %>
+<% else %>
+<h1> how did you get in here?! </h1>
+<% end %>
+
+<div id="myRouteArea">
+  <h2>My Route</h2>
+</div>
+
+<div id="destArea">
+  <h2>Yelp Destinations</h2>
+  <!-- Yelp Search Bar -->
+  <form id="destSearchBar" action="<%= yelpDests_path %>">
+    <label>Search: <input type="text" id="searchTerm" name="searchTerm" maxlength="30" /></label>
+    <input type="submit"/>
+  </form>
+
+  <!-- Will load destinations into destList using AJAX -->
+  <div id="destList"></div>
+</div>
+
+<%= link_to 'Back', routes_path %>

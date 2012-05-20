@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Routy: Build Your Route</title>
+    <%= stylesheet_link_tag    "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+    <script type="text/javascript">
+    $(document).ready(function() {
+	// variable to store the IDs of the destinations that the user has
+	// added to their route.
+	var myDests = [];
+
+	// Takes a destination as an argument and formats it into HTML
+	function addDestToDestList( dest ) {
+	    // don't add to destList if destination has already been
+	    // added My Route
+	    var i;
+	    for (i = 0; i < myDests.length; i++) {
+		if (dest.id == myDests[i])
+		    return;
+	    }
+	    
+	    htmlString = "";
+	    htmlString += "<div class=\"destination\" id=\"" + dest["id"] +"\">";
+	    // name
+	    htmlString += "<h4 id=\"asdfasdf\" class=\"destName\">"
+		+ dest["name"]
+		+ "</h4>";
+	    // image
+	    htmlString += "<img class=\"destImage\" src=\""
+		+ dest["image_url"] + "\"/>";
+	    // address
+	    htmlString += "<p class=\"destAddress\">"
+		+ dest["location"]["display_address"]
+		+ "</p>";
+	    // rating image
+	    htmlString += "<img class=\"destRating\" src=\""
+		+ dest["rating_img_url"] + "\"/>";
+	    // snippet text
+	    htmlString += "<p class=\"destSnippet\">"
+		+ dest["snippet_text"] + "</p>";
+	    // snippet image
+	    htmlString += "<img class=\"destSnippetImage\" src=\""
+		+ dest["snippet_image_url"] + "\"/>";
+	    // add button
+	    htmlString += "<button class=\"destAddButton\" type=\"button\">"
+		+"Add to Route</button>"
+	    htmlString += "</div>"
+	    $('#destList').append(htmlString);
+	}
+	
+	// Event fires when destSearchBar form is submitted
+	// Loads in new destinations from Yelp and adds them to the page.
+	$('#destSearchBar').submit(function() {
+	    var encodedSearchTerm = encodeURI($('#searchTerm').val());
+	    $.get("<%= yelpDests_path %>", { searchTerm: encodedSearchTerm},
+		   function(data) {
+		       var businesses = data["businesses"];
+		       // clear destList's contents
+		       $('#destList').html("");
+		       var i;
+		       // The following loop adds HTML for each destination to
+		       // the page
+		       for (i = 0; i < businesses.length; i++) {
+			   var dest = businesses[i];
+			   addDestToDestList(dest);
+		       }
+		   });
+	    // return false so we don't follow the link after submission
+	    return false;
+	});
+
+	// Event fires when an "Add to Route" button is clicked
+	// Moves the destination's div to the myRouteArea div
+	// Adds the destination's ID to the myDests global variable
+	$('#destList').delegate('.destAddButton', 'click', function() {
+	    var destinationDiv = $(this).parent()[0];
+	    myDests.push(
+	    	{ id: destinationDiv.id,
+	    	  name: $(destinationDiv).find('.destName').text()
+	    	});
+	    $('#myRouteArea').append($(destinationDiv));
+	});
+    });
+</script>
+  </head>
+  <body>
+
+    <%= yield %>
+
+  </body>
+</html>
