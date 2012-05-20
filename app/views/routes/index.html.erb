@@ -1,23 +1,24 @@
-<div id="container" style="width:960px; background-color:#EEEEEE; margin-left:auto; margin-right:auto; " >
-  <h1>Listing routes</h1>
+<div id="container">
+  <div id="title">
+    <h1>Listing routes</h1>
+  </div>
+  
 
-  <table>
-    <tr>
-      <th>Name</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-
-  <% @routes.each do |route| %>
-    <tr>
-      <td><%= route.name %></td>
-      <td><%= link_to 'Show', route %></td>
-      <td><%= link_to 'Edit', edit_route_path(route) %></td>
-      <td><%= link_to 'Destroy', route, confirm: 'Are you sure?', method: :delete %></td>
-    </tr>
-  <% end %>
-  </table>
+<% @routes.each do |route| %>
+<div class="routeIndex">
+  <div class="routeName">
+    <%= route.name %>
+    <br/>
+    <%= render 'image' %>
+  </div>
+  <div class="routeOptions">
+    <p><%= link_to 'Show', route %></p>
+    <p><%= link_to 'Edit', edit_route_path(route) %></p>
+    <p><%= link_to 'Destroy', route, confirm: 'Are you sure?', method: :delete %></p>
+  </div>
+  <div style="display: block; clear: both;"></div>
+</div>
+<% end %>
 
   <br />
 
