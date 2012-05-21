@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
     redirect_to route_path(@route)
   end
   
-  def delete
+  def destroy
     @route = Route.find(params[:route_id])
     @comment = @route.comments.find(params[:id])
     @comment.destroy

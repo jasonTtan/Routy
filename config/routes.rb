@@ -1,5 +1,6 @@
 Routy::Application.routes.draw do
   match '/yelpDests' => 'routes#yelpDests'
+  match '/yelpDestInfo' => 'routes#yelpDestInfo'
 
   resources :routes do
     member do

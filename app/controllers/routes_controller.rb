@@ -17,10 +17,7 @@ class RoutesController < ApplicationController
     end
   end
 
-  
-  # This function acts as a server side proxy to retrieve yelp data without
-  # exposing secret keys
-  def yelpDests
+  def getYelpAccessToken
     consumer_key = '7H5kBamS1jYaTsK_2RYmFQ'
     consumer_secret = '5CB-sj4CP71f3YJSQyjKV3PNktI'
     token = 'uEF1SqoxT9YF-3PEBaUJldLma-WcFp2M'
@@ -29,14 +26,26 @@ class RoutesController < ApplicationController
     api_host = 'api.yelp.com'
 
     consumer = OAuth::Consumer.new(consumer_key, consumer_secret, {:site => "http://#{api_host}"})
-    access_token = OAuth::AccessToken.new(consumer, token, token_secret)
-
+    return OAuth::AccessToken.new(consumer, token, token_secret)
+  end
+  
+  # This function acts as a server side proxy to retrieve yelp data without
+  # exposing secret keys
+  def yelpDests
+    access_token = getYelpAccessToken
     path = "/v2/search?term=" + params[:searchTerm] + "&location=los%20angeles"
 #     Following commented out code was to template the yelp table server side
 #     @yelpResults = JSON.parse(access_token.get(path).body)
 #     # This will be AJAXed into a div, so don't use a layout
 #     render :layout => false
     render :json => access_token.get(path).body
+  end
+
+  def yelpDestInfo
+    access_token = getYelpAccessToken
+    path = "/v2/business/" + params[:businessID]
+
+    render :json=> access_token.get(path).body
   end
 
   # GET /routes/1

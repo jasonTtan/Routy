@@ -1,3 +1,15 @@
 // Place all the styles related to the Destinations controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#destContainer {
+  width: 960px;
+  background-color: #DDD;
+  margin: 5px 0px;
+}
+
+.destName {
+  width: 170px;
+  padding: 5px 5px;
+  float: left;
+}

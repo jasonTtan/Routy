@@ -20,7 +20,17 @@
 </div>
 <% end %>
 
-  <br />
+<br />
 
-  <%= link_to 'New Route', new_route_path %>
+<img name="first">
+<br/>
+<script type="text/javascript">
+  $.get("<%= yelpDestInfo_path %>", { businessID: "mitchells-ice-cream-san-francisco" }, 
+    function(data) {
+      var img = data["image_url"]
+      first.src=img
+    });
+</script>
+
+<%= link_to 'New Route', new_route_path %>
 </div>

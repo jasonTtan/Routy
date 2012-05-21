@@ -1,8 +1,10 @@
-<p>
-  <%= link_to '[x]', [destination.route, destination],
+<div id="destContainer">
+  <div class="destName">
+    <%= link_to '[x]', [destination.route, destination],
              :confirm => 'Are you sure?',
              :method => :delete %>
-  <b><%= destination.name %> - </b> 
-  <b>ID:</b>
-  <%= destination.destID %>
-</p>
+
+    <b><%= destination.name %></b> 
+  </div>
+  <div style="display: block; clear: both;"></div>
+</div>
